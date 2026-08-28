@@ -4,15 +4,23 @@ from assinantes import Assinante
 class PlataformaStreaming:
 
     def __init__(self):
-        
         self.assinantes: list[Assinante] = []
 
-    def cadastrar_assinante(self, assinante: Assinante):
+    def cadastrar_assinante(self):
+        print("\n--- Novo Cadastro ---")
+        nome = input("Informe o nome: ")
+        plano = input("Informe o plano: ")
+        senha = input("Informe a senha: ")
+
+        novo_assinante = Assinante(nome, plano, senha)
+
+        print(
+            f"\nAssinante '{nome}' cadastrado com sucesso! ID Gerado: {novo_assinante.id_conta}"
+        )
         
-        self.assinantes.append(assinante)
+        self.assinantes.append(novo_assinante)
 
     def listar_assinantes(self):
-    
         if not self.assinantes:
             print("\nNenhum assinante cadastrado.")
             return
@@ -22,16 +30,22 @@ class PlataformaStreaming:
             print(assinante.exibir_dados())
 
     def buscar_por_id(self, id_conta: int):
-        
         for assinante in self.assinantes:
             if assinante.id_conta == id_conta:
                 return assinante
         return None
 
-    def cancelar_assinatura(self, id_conta: int):
-        
-        assinante = self.buscar_por_id(id_conta)
-        if assinante:
-            self.assinantes.remove(assinante)
-            return True
-        return False
+    def cancelar_assinatura(self):
+        print("\n--- Cancelamento de Assinatura ---")
+        try:
+            id_conta = int(input("Informe o ID da conta a ser cancelada: "))
+
+            assinante = self.buscar_por_id(id_conta)
+            if assinante:
+                self.assinantes.remove(assinante)
+                print(f"Assinatura ID {id_conta} foi cancelada com sucesso.")
+            else:
+                print(f"Nenhum assinante encontrado com o ID {id_conta}.")
+
+        except ValueError:
+            print("Erro: O ID deve ser um número inteiro!")
